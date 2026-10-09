@@ -1,0 +1,3416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hogwarts — The Wizarding World</title>
+
+<style>
+:root{
+  --gold:#d8b45a;
+  --gold2:#f1d27a;
+  --ink:#080b18;
+  --panel:rgba(255,255,255,.055);
+  --panel2:rgba(255,255,255,.085);
+  --muted:#bcb39f;
+  --white:#f8f5ec;
+  --line:rgba(216,180,90,.25);
+  --red:#8d2e35;
+  --green:#28543d;
+  --blue:#315b86;
+}
+
+*{
+  box-sizing:border-box;
+  scroll-behavior:smooth;
+}
+
+html{
+  scroll-padding-top:80px;
+}
+
+body{
+  margin:0;
+  color:var(--white);
+  font-family:Georgia,"Times New Roman",serif;
+  background:
+    radial-gradient(circle at 50% 10%,rgba(75,55,120,.38),transparent 35%),
+    linear-gradient(180deg,#080b18 0%,#11152b 48%,#05060d 100%);
+  overflow-x:hidden;
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.35;
+  z-index:-1;
+  background-image:
+    radial-gradient(circle,#fff 1px,transparent 1.5px),
+    radial-gradient(circle,#fff 1px,transparent 1.5px);
+  background-size:95px 95px,145px 145px;
+  background-position:10px 20px,50px 80px;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+button,
+input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.nav{
+  position:fixed;
+  z-index:1000;
+  top:0;
+  left:0;
+  right:0;
+  height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 5%;
+  background:rgba(5,7,16,.86);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid var(--line);
+}
+
+.logo{
+  color:var(--gold2);
+  font-size:1.25rem;
+  font-weight:bold;
+  letter-spacing:2px;
+}
+
+.nav-links{
+  display:flex;
+  gap:20px;
+  align-items:center;
+  overflow-x:auto;
+}
+
+.nav-links a{
+  white-space:nowrap;
+  color:var(--muted);
+  font-size:.8rem;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  transition:.25s;
+}
+
+.nav-links a:hover{
+  color:var(--gold2);
+}
+
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:110px 20px 70px;
+  position:relative;
+}
+
+.hero-inner{
+  max-width:1050px;
+}
+
+.crest{
+  width:110px;
+  height:110px;
+  border:2px solid var(--gold);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 25px;
+  color:var(--gold2);
+  font-size:3.2rem;
+  box-shadow:
+    0 0 40px rgba(216,180,90,.16),
+    inset 0 0 25px rgba(216,180,90,.08);
+}
+
+.hero h1{
+  margin:0;
+  font-size:clamp(4rem,12vw,9rem);
+  letter-spacing:8px;
+  color:var(--gold2);
+  text-shadow:0 0 35px rgba(216,180,90,.15);
+}
+
+.hero-subtitle{
+  font-size:1.35rem;
+  color:var(--muted);
+  letter-spacing:4px;
+  text-transform:uppercase;
+}
+
+.hero p{
+  max-width:750px;
+  margin:25px auto;
+  color:#d4cfbf;
+  line-height:1.8;
+  font-size:1.05rem;
+}
+
+.btn{
+  display:inline-block;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.04);
+  color:var(--gold2);
+  padding:12px 22px;
+  border-radius:999px;
+  transition:.25s;
+  margin:5px;
+}
+
+.btn:hover{
+  background:rgba(216,180,90,.12);
+  border-color:var(--gold2);
+  transform:translateY(-2px);
+}
+
+.btn.primary{
+  background:linear-gradient(
+    135deg,
+    rgba(216,180,90,.25),
+    rgba(216,180,90,.08)
+  );
+  border-color:var(--gold);
+}
+
+.section{
+  padding:100px 6%;
+  max-width:1500px;
+  margin:auto;
+}
+
+.section-heading{
+  text-align:center;
+  max-width:850px;
+  margin:0 auto 45px;
+}
+
+.eyebrow{
+  color:var(--gold);
+  text-transform:uppercase;
+  letter-spacing:4px;
+  font-size:.75rem;
+}
+
+.section-heading h2{
+  font-size:clamp(2rem,5vw,3.5rem);
+  margin:10px 0;
+  color:var(--gold2);
+}
+
+.section-heading p{
+  color:var(--muted);
+  line-height:1.8;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:20px;
+}
+
+.card{
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.075),
+      rgba(255,255,255,.025)
+    );
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:28px;
+  box-shadow:0 20px 50px rgba(0,0,0,.2);
+  transition:.3s;
+}
+
+.card:hover{
+  transform:translateY(-7px);
+  border-color:var(--gold);
+  box-shadow:0 25px 60px rgba(0,0,0,.35);
+}
+
+.house-card{
+  min-height:270px;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+}
+
+.house-card:after{
+  content:"";
+  position:absolute;
+  width:160px;
+  height:160px;
+  border-radius:50%;
+  right:-80px;
+  bottom:-80px;
+  background:rgba(216,180,90,.08);
+}
+
+.house-icon{
+  font-size:3rem;
+}
+
+.house-card h3{
+  color:var(--gold2);
+  font-size:1.7rem;
+}
+
+.house-card p{
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.house-details{
+  margin-top:30px;
+  display:none;
+  animation:fadeIn .4s ease;
+}
+
+.house-details.active{
+  display:block;
+}
+
+.detail-panel{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:35px;
+}
+
+.detail-panel h3{
+  color:var(--gold2);
+  font-size:2rem;
+}
+
+.detail-panel p,
+.detail-panel li{
+  color:var(--muted);
+  line-height:1.8;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* QUIZZES */
+
+.quiz-box{
+  max-width:850px;
+  margin:auto;
+  padding:38px;
+  text-align:center;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.075),
+      rgba(255,255,255,.025)
+    );
+  box-shadow:0 25px 70px rgba(0,0,0,.35);
+}
+
+.quiz-progress{
+  margin-bottom:20px;
+  color:var(--gold);
+  font-size:.78rem;
+  letter-spacing:3px;
+  text-transform:uppercase;
+}
+
+.quiz-box h3{
+  max-width:700px;
+  margin:0 auto 28px;
+  color:var(--gold2);
+  font-size:1.45rem;
+  line-height:1.5;
+}
+
+.quiz-answers{
+  display:grid;
+  gap:12px;
+  margin-bottom:25px;
+}
+
+.quiz-answer{
+  width:100%;
+  padding:16px 20px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:rgba(255,255,255,.035);
+  color:var(--white);
+  text-align:left;
+  transition:.25s;
+}
+
+.quiz-answer:hover{
+  border-color:var(--gold2);
+  background:rgba(216,180,90,.08);
+  transform:translateX(4px);
+}
+
+.quiz-answer.selected{
+  border-color:var(--gold2);
+  background:rgba(216,180,90,.15);
+  color:var(--gold2);
+}
+
+.quiz-next{
+  min-width:140px;
+}
+
+.quiz-next:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.quiz-result{
+  padding:25px;
+  margin-top:15px;
+  border-top:1px solid var(--line);
+}
+
+.quiz-result-icon{
+  font-size:4rem;
+}
+
+.quiz-result h3{
+  font-size:2rem;
+}
+
+.quiz-result p{
+  color:var(--muted);
+  line-height:1.8;
+}
+
+.quiz-box.quiz-finished
+.quiz-question-area,
+.quiz-box.quiz-finished
+.quiz-progress{
+  display:none;
+}
+
+/* BOOKS */
+
+.book-card{
+  min-height:330px;
+}
+
+.book-number{
+  color:var(--gold);
+  font-size:.8rem;
+  letter-spacing:2px;
+}
+
+.book-card h3{
+  color:var(--gold2);
+}
+
+.book-card p{
+  color:var(--muted);
+  line-height:1.8;
+}
+
+/* TRAILERS */
+
+.trailer-card{
+  overflow:hidden;
+  padding:0;
+}
+
+.trailer-preview{
+  height:180px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(216,180,90,.18),transparent 40%),
+    linear-gradient(135deg,#0b1022,#1b1830,#080b18);
+}
+
+.play-button{
+  width:70px;
+  height:70px;
+  border:2px solid var(--gold);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--gold2);
+  font-size:1.7rem;
+  transition:.25s;
+}
+
+.trailer-preview:hover .play-button{
+  transform:scale(1.12);
+  box-shadow:0 0 35px rgba(216,180,90,.25);
+}
+
+.trailer-content{
+  padding:25px;
+}
+
+.trailer-content h3{
+  color:var(--gold2);
+}
+
+.trailer-content p{
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.trailer-note{
+  font-size:.8rem;
+  color:#968d7c;
+}
+
+/* DIRECTORY */
+
+.search-box{
+  width:100%;
+  max-width:700px;
+  display:block;
+  margin:0 auto 30px;
+  padding:15px 20px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.04);
+  color:white;
+  outline:none;
+}
+
+.person-card h3{
+  color:var(--gold2);
+}
+
+.person-card .role{
+  color:var(--gold);
+  font-size:.8rem;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.person-card p{
+  color:var(--muted);
+  line-height:1.65;
+}
+
+/* MAP */
+
+.map-toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  margin-bottom:20px;
+}
+
+.floor-btn,
+.map-control{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.04);
+  color:var(--muted);
+  padding:9px 14px;
+  border-radius:999px;
+  transition:.2s;
+}
+
+.floor-btn:hover,
+.floor-btn.active,
+.map-control:hover{
+  color:var(--gold2);
+  border-color:var(--gold);
+  background:rgba(216,180,90,.1);
+}
+
+.map-wrap{
+  border:1px solid var(--line);
+  border-radius:25px;
+  padding:20px;
+  background:
+    radial-gradient(circle at 50% 40%,rgba(75,55,120,.25),transparent 55%),
+    rgba(2,4,12,.8);
+  overflow:hidden;
+}
+
+.map-status{
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+  color:var(--muted);
+  margin-bottom:15px;
+  font-size:.85rem;
+}
+
+.map-viewport{
+  height:650px;
+  position:relative;
+  overflow:hidden;
+  border-radius:18px;
+  background:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),
+    #090d1b;
+  background-size:30px 30px;
+  perspective:1000px;
+}
+
+.map-scene{
+  position:absolute;
+  width:1100px;
+  height:650px;
+  left:50%;
+  top:50%;
+  transform:
+    translate(-50%,-50%)
+    rotateX(54deg)
+    rotateZ(-2deg)
+    scale(.82);
+  transform-style:preserve-3d;
+  transition:transform .3s ease;
+}
+
+.map-floor{
+  position:absolute;
+  inset:0;
+  border:5px solid rgba(216,180,90,.25);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(216,180,90,.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      rgba(216,180,90,.035) 1px,
+      transparent 1px
+    ),
+    rgba(20,25,45,.75);
+  background-size:45px 45px;
+  box-shadow:
+    inset 0 0 80px rgba(0,0,0,.55),
+    0 35px 60px rgba(0,0,0,.5);
+  transform-style:preserve-3d;
+}
+
+.map-floor.hidden{
+  display:none;
+}
+
+.map-label{
+  position:absolute;
+  top:15px;
+  left:20px;
+  color:rgba(241,210,122,.45);
+  letter-spacing:5px;
+  font-size:1.3rem;
+}
+
+.room{
+  position:absolute;
+  min-width:130px;
+  min-height:75px;
+  padding:12px;
+  border:2px solid rgba(216,180,90,.4);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(35,43,70,.96),
+      rgba(10,14,28,.96)
+    );
+  color:var(--gold2);
+  border-radius:8px;
+  cursor:pointer;
+  transform:translateZ(25px);
+  box-shadow:0 12px 20px rgba(0,0,0,.35);
+  transition:.25s;
+  text-align:center;
+}
+
+.room:hover{
+  border-color:var(--gold2);
+  transform:translateZ(45px) scale(1.04);
+  box-shadow:0 0 30px rgba(216,180,90,.2);
+}
+
+.room small{
+  display:block;
+  color:var(--muted);
+  margin-top:5px;
+}
+
+.corridor{
+  position:absolute;
+  height:12px;
+  background:rgba(216,180,90,.18);
+  border:1px solid rgba(216,180,90,.2);
+  transform:translateZ(5px);
+}
+
+.door{
+  position:absolute;
+  width:28px;
+  height:12px;
+  background:#573d20;
+  border:2px solid var(--gold);
+  cursor:pointer;
+  transform:translateZ(35px);
+  transition:.3s;
+}
+
+.door.open{
+  background:#b99048;
+  transform:translateZ(35px) rotateY(65deg);
+}
+
+.staircase{
+  position:absolute;
+  width:100px;
+  height:110px;
+  border:2px solid var(--gold);
+  background:rgba(75,55,120,.35);
+  transform:translateZ(35px);
+  cursor:pointer;
+  overflow:hidden;
+}
+
+.step{
+  position:absolute;
+  left:8px;
+  right:8px;
+  height:8px;
+  border:1px solid var(--gold);
+  background:rgba(216,180,90,.25);
+  animation:stairMove 2.4s infinite alternate ease-in-out;
+}
+
+.step:nth-child(1){top:82px;animation-delay:0s}
+.step:nth-child(2){top:70px;animation-delay:.15s}
+.step:nth-child(3){top:58px;animation-delay:.3s}
+.step:nth-child(4){top:46px;animation-delay:.45s}
+.step:nth-child(5){top:34px;animation-delay:.6s}
+.step:nth-child(6){top:22px;animation-delay:.75s}
+
+@keyframes stairMove{
+  to{
+    transform:translateX(15px);
+  }
+}
+
+.portrait{
+  position:absolute;
+  width:75px;
+  height:95px;
+  border:3px solid #b48a42;
+  background:
+    radial-gradient(circle at 50% 35%,#c6a66c 0 16%,transparent 17%),
+    linear-gradient(#273552,#0d111e);
+  cursor:pointer;
+  transform:translateZ(40px);
+  animation:portraitMove 3s infinite ease-in-out;
+}
+
+.portrait:after{
+  content:"";
+  position:absolute;
+  inset:5px;
+  border:1px solid rgba(216,180,90,.4);
+}
+
+@keyframes portraitMove{
+  0%,100%{transform:translateZ(40px) translateY(0)}
+  50%{transform:translateZ(55px) translateY(-7px)}
+}
+
+.map-popup{
+  margin-top:20px;
+  padding:25px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(255,255,255,.04);
+}
+
+.map-popup h3{
+  color:var(--gold2);
+  margin-top:0;
+}
+
+.map-popup p{
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.daynight{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:900;
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  border:1px solid var(--gold);
+  background:#11172c;
+  color:var(--gold2);
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+
+body.night .map-viewport{
+  background:
+    radial-gradient(circle at 70% 15%,rgba(70,90,160,.22),transparent 20%),
+    #02040c;
+}
+
+body.night .map-floor{
+  background:
+    linear-gradient(rgba(100,120,180,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(100,120,180,.035) 1px,transparent 1px),
+    #060914;
+}
+
+footer{
+  padding:60px 20px;
+  text-align:center;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+}
+
+footer strong{
+  color:var(--gold2);
+}
+
+@media(max-width:800px){
+
+  .nav{
+    height:62px;
+  }
+
+  .logo{
+    font-size:1rem;
+  }
+
+  .nav-links{
+    gap:10px;
+  }
+
+  .nav-links a{
+    font-size:.65rem;
+  }
+
+  .map-viewport{
+    height:500px;
+  }
+
+  .map-scene{
+    transform:
+      translate(-50%,-50%)
+      rotateX(54deg)
+      scale(.55);
+  }
+
+  .hero h1{
+    letter-spacing:3px;
+  }
+
+  .quiz-box{
+    padding:25px 18px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+
+<nav class="nav">
+
+  <a href="#home" class="logo">
+    ⚡ HOGWARTS
+  </a>
+
+  <div class="nav-links">
+    <a href="#houses">Houses</a>
+    <a href="#house-quiz">House Test</a>
+    <a href="#books">Books</a>
+    <a href="#trailers">Trailers</a>
+    <a href="#map">Map</a>
+    <a href="#characters">Characters</a>
+    <a href="#teachers">Teachers</a>
+    <a href="#character-quiz">Character Test</a>
+  </div>
+
+</nav>
+
+
+<!-- HERO -->
+
+<header class="hero" id="home">
+
+  <div class="hero-inner">
+
+    <div class="crest">⚡</div>
+
+    <h1>HOGWARTS</h1>
+
+    <div class="hero-subtitle">
+      School of Witchcraft and Wizardry
+    </div>
+
+    <p>
+      Explore the houses, stories, characters, teachers and
+      mysterious halls of Hogwarts in this fan-made interactive
+      magical archive.
+    </p>
+
+    <a href="#houses" class="btn primary">
+      Enter the Castle
+    </a>
+
+    <a href="#map" class="btn">
+      Explore Hogwarts
+    </a>
+
+  </div>
+
+</header>
+
+
+<!-- HOUSES -->
+
+<section class="section" id="houses">
+
+  <div class="section-heading">
+
+    <span class="eyebrow">THE FOUR HOUSES</span>
+
+    <h2>Where Do You Belong?</h2>
+
+    <p>
+      Four founders. Four traditions. One extraordinary school.
+      Click a house to reveal more about its history and values.
+    </p>
+
+  </div>
+
+
+  <div class="grid">
+
+    <article
+      class="card house-card"
+      onclick="showHouse('gryffindor')">
+
+      <div class="house-icon">🦁</div>
+
+      <h3>Gryffindor</h3>
+
+      <p>
+        Courage, nerve, determination and daring.
+      </p>
+
+    </article>
+
+
+    <article
+      class="card house-card"
+      onclick="showHouse('slytherin')">
+
+      <div class="house-icon">🐍</div>
+
+      <h3>Slytherin</h3>
+
+      <p>
+        Ambition, resourcefulness, determination and strategy.
+      </p>
+
+    </article>
+
+
+    <article
+      class="card house-card"
+      onclick="showHouse('ravenclaw')">
+
+      <div class="house-icon">🦅</div>
+
+      <h3>Ravenclaw</h3>
+
+      <p>
+        Intelligence, curiosity, creativity and wisdom.
+      </p>
+
+    </article>
+
+
+    <article
+      class="card house-card"
+      onclick="showHouse('hufflepuff')">
+
+      <div class="house-icon">🦡</div>
+
+      <h3>Hufflepuff</h3>
+
+      <p>
+        Loyalty, patience, fairness and hard work.
+      </p>
+
+    </article>
+
+  </div>
+
+
+  <div id="houseDetails" class="house-details">
+
+    <div class="detail-panel">
+
+      <h3 id="houseDetailTitle"></h3>
+
+      <p id="houseDetailText"></p>
+
+      <ul id="houseDetailList"></ul>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- HOUSE QUIZ -->
+
+<section class="section" id="house-quiz">
+
+  <div class="section-heading">
+
+    <span class="eyebrow">THE SORTING</span>
+
+    <h2>Which Hogwarts House Are You?</h2>
+
+    <p>
+      Answer each question and see which house your choices
+      most closely match.
+    </p>
+
+  </div>
+
+
+  <div class="quiz-box" id="houseQuizBox">
+
+    <div class="quiz-progress">
+      Question
+      <span id="houseQuestionNumber">1</span>
+      of 7
+    </div>
+
+
+    <div class="quiz-question-area">
+
+      <h3 id="houseQuestion"></h3>
+
+      <div
+        id="houseAnswers"
+        class="quiz-answers">
+      </div>
+
+      <button
+        id="houseNext"
+        class="btn primary quiz-next"
+        onclick="nextHouseQuestion()"
+        disabled>
+        Next →
+      </button>
+
+    </div>
+
+
+    <div
+      id="houseResult"
+      class="quiz-result"
+      style="display:none">
+
+      <div
+        id="houseResultIcon"
+        class="quiz-result-icon">
+        ⚡
+      </div>
+
+      <h3 id="houseResultTitle"></h3>
+
+      <p id="houseResultText"></p>
+
+      <button
+        class="btn"
+        onclick="restartHouseQuiz()">
+        Take Again
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- BOOKS -->
+
+<section class="section" id="books">
+
+  <div class="section-heading">
+
+    <span class="eyebrow">THE SEVEN STORIES</span>
+
+    <h2>The Hogwarts Saga</h2>
+
+    <p>
+      Original fan-made summaries of the seven main books.
+    </p>
+
+  </div>
+
+
+  <div class="grid">
+
+    <article class="card book-card">
+      <span class="book-number">BOOK I</span>
+      <h3>Harry Potter and the Philosopher's Stone</h3>
+      <p>
+        Harry discovers that magic is real and begins his first
+        year at Hogwarts. Alongside Ron and Hermione, he learns
+        about the castle, wizarding history and the mystery
+        surrounding a powerful magical object.
+      </p>
+    </article>
+
+
+    <article class="card book-card">
+      <span class="book-number">BOOK II</span>
+      <h3>Harry Potter and the Chamber of Secrets</h3>
+      <p>
+        A hidden threat awakens within Hogwarts. Strange attacks,
+        an ancient chamber and a mysterious diary lead Harry
+        toward a secret connected with the school's past.
+      </p>
+    </article>
+
+
+    <article class="card book-card">
+      <span class="book-number">BOOK III</span>
+      <h3>Harry Potter and the Prisoner of Azkaban</h3>
+      <p>
+        An escaped prisoner is believed to be searching for Harry.
+        Dementors arrive at Hogwarts while Harry uncovers secrets
+        involving his parents and their old friends.
+      </p>
+    </article>
+
+
+    <article class="card book-card">
+      <span class="book-number">BOOK IV</span>
+      <h3>Harry Potter and the Goblet of Fire</h3>
+      <p>
+        Hogwarts hosts the Triwizard Tournament. Harry unexpectedly
+        becomes a champion and is pulled into events that lead
+        the wizarding world toward a dangerous new chapter.
+      </p>
+    </article>
+
+
+    <article class="card book-card">
+      <span class="book-number">BOOK V</span>
+      <h3>Harry Potter and the Order of the Phoenix</h3>
+      <p>
+        The Ministry refuses to accept the growing danger.
+        A new authority takes control of Hogwarts, while Harry
+        and his friends secretly prepare students to defend
+        themselves.
+      </p>
+    </article>
+
+
+    <article class="card book-card">
+      <span class="book-number">BOOK VI</span>
+      <h3>Harry Potter and the Half-Blood Prince</h3>
+      <p>
+        Harry and Dumbledore investigate memories from Voldemort's
+        past. At the same time, Draco receives a dangerous mission
+        and tensions inside the castle rise.
+      </p>
+    </article>
+
+
+    <article class="card book-card">
+      <span class="book-number">BOOK VII</span>
+      <h3>Harry Potter and the Deathly Hallows</h3>
+      <p>
+        Harry, Ron and Hermione leave Hogwarts to search for the
+        remaining Horcruxes. Their journey eventually brings them
+        back to Hogwarts for the final confrontation.
+      </p>
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- TRAILERS -->
+
+<section class="section" id="trailers">
+
+  <div class="section-heading">
+
+    <span class="eyebrow">THE FILMS</span>
+
+    <h2>Harry Potter Trailers</h2>
+
+    <p>
+      These cards are designed as trailer launch panels.
+      The button opens the official movie search rather than
+      embedding copyrighted film footage directly into this page.
+    </p>
+
+  </div>
+
+
+  <div class="grid">
+
+    <article class="card trailer-card">
+
+      <div class="trailer-preview">
+        <div class="play-button"
+          onclick="openTrailer('Harry Potter Philosopher Stone official trailer')">
+          ▶
+        </div>
+      </div>
+
+      <div class="trailer-content">
+        <h3>Philosopher's Stone</h3>
+        <p>
+          A young wizard discovers Hogwarts and enters a world
+          of magic, friendship and ancient mysteries.
+        </p>
+
+        <button
+          class="btn"
+          onclick="openTrailer('Harry Potter Philosopher Stone official trailer')">
+          ▶ Watch Trailer
+        </button>
+      </div>
+
+    </article>
+
+
+    <article class="card trailer-card">
+
+      <div class="trailer-preview">
+        <div class="play-button"
+          onclick="openTrailer('Harry Potter Chamber of Secrets official trailer')">
+          ▶
+        </div>
+      </div>
+
+      <div class="trailer-content">
+        <h3>Chamber of Secrets</h3>
+        <p>
+          A hidden chamber opens beneath Hogwarts and Harry
+          investigates a frightening mystery.
+        </p>
+
+        <button class="btn"
+          onclick="openTrailer('Harry Potter Chamber of Secrets official trailer')">
+          ▶ Watch Trailer
+        </button>
+      </div>
+
+    </article>
+
+
+    <article class="card trailer-card">
+
+      <div class="trailer-preview">
+        <div class="play-button"
+          onclick="openTrailer('Harry Potter Prisoner of Azkaban official trailer')">
+          ▶
+        </div>
+      </div>
+
+      <div class="trailer-content">
+        <h3>Prisoner of Azkaban</h3>
+        <p>
+          A mysterious escapee, Dementors and forgotten secrets
+          change Harry's understanding of his past.
+        </p>
+
+        <button class="btn"
+          onclick="openTrailer('Harry Potter Prisoner of Azkaban official trailer')">
+          ▶ Watch Trailer
+        </button>
+      </div>
+
+    </article>
+
+
+    <article class="card trailer-card">
+
+      <div class="trailer-preview">
+        <div class="play-button"
+          onclick="openTrailer('Harry Potter Goblet of Fire official trailer')">
+          ▶
+        </div>
+      </div>
+
+      <div class="trailer-content">
+        <h3>Goblet of Fire</h3>
+        <p>
+          The Triwizard Tournament arrives at Hogwarts and
+          Harry is unexpectedly selected to compete.
+        </p>
+
+        <button class="btn"
+          onclick="openTrailer('Harry Potter Goblet of Fire official trailer')">
+          ▶ Watch Trailer
+        </button>
+      </div>
+
+    </article>
+
+
+    <article class="card trailer-card">
+
+      <div class="trailer-preview">
+        <div class="play-button"
+          onclick="openTrailer('Harry Potter Order of the Phoenix official trailer')">
+          ▶
+        </div>
+      </div>
+
+      <div class="trailer-content">
+        <h3>Order of the Phoenix</h3>
+        <p>
+          Hogwarts changes under new leadership while Harry
+          secretly trains a group of students.
+        </p>
+
+        <button class="btn"
+          onclick="openTrailer('Harry Potter Order of the Phoenix official trailer')">
+          ▶ Watch Trailer
+        </button>
+      </div>
+
+    </article>
+
+
+    <article class="card trailer-card">
+
+      <div class="trailer-preview">
+        <div class="play-button"
+          onclick="openTrailer('Harry Potter Half Blood Prince official trailer')">
+          ▶
+        </div>
+      </div>
+
+      <div class="trailer-content">
+        <h3>Half-Blood Prince</h3>
+        <p>
+          Harry explores Voldemort's history while dangerous
+          events unfold inside Hogwarts.
+        </p>
+
+        <button class="btn"
+          onclick="openTrailer('Harry Potter Half Blood Prince official trailer')">
+          ▶ Watch Trailer
+        </button>
+      </div>
+
+    </article>
+
+
+    <article class="card trailer-card">
+
+      <div class="trailer-preview">
+        <div class="play-button"
+          onclick="openTrailer('Harry Potter Deathly Hallows Part 1 official trailer')">
+          ▶
+        </div>
+      </div>
+
+      <div class="trailer-content">
+        <h3>Deathly Hallows — Part 1</h3>
+        <p>
+          Harry, Ron and Hermione leave the safety of Hogwarts
+          and begin a dangerous search for Horcruxes.
+        </p>
+
+        <button class="btn"
+          onclick="openTrailer('Harry Potter Deathly Hallows Part 1 official trailer')">
+          ▶ Watch Trailer
+        </button>
+      </div>
+
+    </article>
+
+
+    <article class="card trailer-card">
+
+      <div class="trailer-preview">
+        <div class="play-button"
+          onclick="openTrailer('Harry Potter Deathly Hallows Part 2 official trailer')">
+          ▶
+        </div>
+      </div>
+
+      <div class="trailer-content">
+        <h3>Deathly Hallows — Part 2</h3>
+        <p>
+          The story returns to Hogwarts for its climactic battle
+          as Harry's journey reaches its conclusion.
+        </p>
+
+        <button class="btn"
+          onclick="openTrailer('Harry Potter Deathly Hallows Part 2 official trailer')">
+          ▶ Watch Trailer
+        </button>
+      </div>
+
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- MAP -->
+
+<section class="section" id="map">
+
+  <div class="section-heading">
+
+    <span class="eyebrow">THE CASTLE</span>
+
+    <h2>Explore Hogwarts</h2>
+
+    <p>
+      A stylized fan-made pseudo-3D map inspired by the visual
+      layout and atmosphere of Hogwarts. Select floors, open
+      doors, use staircases and discover rooms and portraits.
+    </p>
+
+  </div>
+
+
+  <div class="map-toolbar">
+
+    <button class="floor-btn active"
+      onclick="selectFloor('ground',this)">
+      Ground
+    </button>
+
+    <button class="floor-btn"
+      onclick="selectFloor('first',this)">
+      First
+    </button>
+
+    <button class="floor-btn"
+      onclick="selectFloor('second',this)">
+      Second
+    </button>
+
+    <button class="floor-btn"
+      onclick="selectFloor('third',this)">
+      Third
+    </button>
+
+    <button class="floor-btn"
+      onclick="selectFloor('fourth',this)">
+      Fourth
+    </button>
+
+    <button class="floor-btn"
+      onclick="selectFloor('fifth',this)">
+      Fifth
+    </button>
+
+    <button class="floor-btn"
+      onclick="selectFloor('sixth',this)">
+      Sixth
+    </button>
+
+    <button class="floor-btn"
+      onclick="selectFloor('seventh',this)">
+      Seventh
+    </button>
+
+    <button class="floor-btn"
+      onclick="selectFloor('dungeons',this)">
+      Dungeons
+    </button>
+
+    <button class="floor-btn"
+      onclick="selectFloor('towers',this)">
+      Towers
+    </button>
+
+  </div>
+
+
+  <div class="map-wrap">
+
+    <div class="map-status">
+
+      <span id="mapFloorText">
+        Ground Floor
+      </span>
+
+      <span>
+        ⚡ Interactive Hogwarts Map
+      </span>
+
+    </div>
+
+
+    <div class="map-viewport" id="mapViewport">
+
+      <div class="map-scene" id="mapScene">
+
+        <!-- GROUND FLOOR -->
+
+        <div
+          class="map-floor"
+          data-floor="ground">
+
+          <div class="map-label">
+            GREAT HALL / ENTRANCE FLOOR
+          </div>
+
+
+          <div
+            class="room"
+            style="left:90px;top:180px"
+            onclick="roomInfo('Great Hall','The enormous ceremonial hall with long house tables and a magical ceiling.')">
+            Great Hall
+            <small>Main Hall</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:410px;top:130px"
+            onclick="roomInfo('Entrance Hall','A grand stone entrance leading toward the castle interior.')">
+            Entrance Hall
+            <small>Castle Entrance</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:700px;top:200px"
+            onclick="roomInfo('Great Staircase','A huge moving staircase connects many areas of Hogwarts.')">
+            Great Staircase
+            <small>Moving Stairs</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:380px;top:360px"
+            onclick="roomInfo('Dining Passage','A broad corridor leading toward the Great Hall.')">
+            Dining Passage
+            <small>Corridor</small>
+          </div>
+
+
+          <div class="corridor"
+            style="left:220px;top:215px;width:190px">
+          </div>
+
+          <div class="corridor"
+            style="left:540px;top:225px;width:160px">
+          </div>
+
+
+          <div
+            class="door"
+            style="left:390px;top:245px"
+            onclick="toggleDoor(this)">
+          </div>
+
+
+          <div
+            class="staircase"
+            style="left:850px;top:380px"
+            onclick="useStaircase('first')">
+
+            <div class="step"></div>
+            <div class="step"></div>
+            <div class="step"></div>
+            <div class="step"></div>
+            <div class="step"></div>
+            <div class="step"></div>
+
+          </div>
+
+
+          <div
+            class="portrait"
+            style="left:580px;top:410px"
+            onclick="portraitTalk(this)">
+          </div>
+
+        </div>
+
+
+        <!-- FIRST FLOOR -->
+
+        <div
+          class="map-floor hidden"
+          data-floor="first">
+
+          <div class="map-label">
+            FIRST FLOOR
+          </div>
+
+
+          <div
+            class="room"
+            style="left:100px;top:140px"
+            onclick="roomInfo('Defence Against the Dark Arts Classroom','A classroom associated with one of Hogwarts most frequently changing subjects.')">
+            D.A.D.A.
+            <small>Classroom</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:400px;top:110px"
+            onclick="roomInfo('Transfiguration Classroom','A classroom used for transforming objects and studying transfiguration.')">
+            Transfiguration
+            <small>Classroom</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:710px;top:160px"
+            onclick="roomInfo('Staff Corridor','A quieter corridor connecting teaching areas.')">
+            Staff Corridor
+            <small>Corridor</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:400px;top:360px"
+            onclick="roomInfo('Hospital Wing','The castle infirmary where students receive magical medical care.')">
+            Hospital Wing
+            <small>Infirmary</small>
+          </div>
+
+
+          <div class="corridor"
+            style="left:250px;top:180px;width:150px">
+          </div>
+
+          <div class="corridor"
+            style="left:560px;top:190px;width:150px">
+          </div>
+
+          <div
+            class="door"
+            style="left:375px;top:195px"
+            onclick="toggleDoor(this)">
+          </div>
+
+          <div
+            class="staircase"
+            style="left:850px;top:400px"
+            onclick="useStaircase('second')">
+
+            <div class="step"></div>
+            <div class="step"></div>
+            <div class="step"></div>
+            <div class="step"></div>
+            <div class="step"></div>
+            <div class="step"></div>
+
+          </div>
+
+        </div>
+
+
+        <!-- SECOND -->
+
+        <div
+          class="map-floor hidden"
+          data-floor="second">
+
+          <div class="map-label">
+            SECOND FLOOR
+          </div>
+
+
+          <div
+            class="room"
+            style="left:130px;top:160px"
+            onclick="roomInfo('Library','A vast magical library containing shelves of books and restricted knowledge.')">
+            Library
+            <small>Books</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:470px;top:120px"
+            onclick="roomInfo('Restricted Section','A restricted part of the library containing particularly sensitive magical books.')">
+            Restricted Section
+            <small>Restricted</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:760px;top:300px"
+            onclick="roomInfo('Corridor of Portraits','A long corridor lined with magical portraits.')">
+            Portrait Corridor
+            <small>Portraits</small>
+          </div>
+
+
+          <div
+            class="portrait"
+            style="left:700px;top:120px"
+            onclick="portraitTalk(this)">
+          </div>
+
+          <div
+            class="portrait"
+            style="left:850px;top:180px"
+            onclick="portraitTalk(this)">
+          </div>
+
+        </div>
+
+
+        <!-- THIRD -->
+
+        <div
+          class="map-floor hidden"
+          data-floor="third">
+
+          <div class="map-label">
+            THIRD FLOOR
+          </div>
+
+
+          <div
+            class="room"
+            style="left:100px;top:180px"
+            onclick="roomInfo('Mirror Chamber','A quiet magical room suitable for a mysterious encounter.')">
+            Mirror Chamber
+            <small>Mystery</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:440px;top:130px"
+            onclick="roomInfo('Stone Corridor','An atmospheric corridor deep within the castle.')">
+            Stone Corridor
+            <small>Corridor</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:740px;top:300px"
+            onclick="roomInfo('Unused Classroom','One of the many changing classrooms of Hogwarts.')">
+            Empty Classroom
+            <small>Classroom</small>
+          </div>
+
+        </div>
+
+
+        <!-- FOURTH -->
+
+        <div
+          class="map-floor hidden"
+          data-floor="fourth">
+
+          <div class="map-label">
+            FOURTH FLOOR
+          </div>
+
+
+          <div
+            class="room"
+            style="left:160px;top:150px"
+            onclick="roomInfo('Ancient Runes Classroom','A study room for old magical writing and languages.')">
+            Ancient Runes
+            <small>Classroom</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:530px;top:240px"
+            onclick="roomInfo('Gallery Corridor','A grand corridor with enchanted artwork.')">
+            Gallery
+            <small>Artwork</small>
+          </div>
+
+        </div>
+
+
+        <!-- FIFTH -->
+
+        <div
+          class="map-floor hidden"
+          data-floor="fifth">
+
+          <div class="map-label">
+            FIFTH FLOOR
+          </div>
+
+
+          <div
+            class="room"
+            style="left:150px;top:190px"
+            onclick="roomInfo('Prefect Area','A quiet section associated with older students and prefects.')">
+            Prefect Area
+            <small>Students</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:600px;top:160px"
+            onclick="roomInfo('Music Room','A Hogwarts room associated with music and magical instruments.')">
+            Music Room
+            <small>Music</small>
+          </div>
+
+        </div>
+
+
+        <!-- SIXTH -->
+
+        <div
+          class="map-floor hidden"
+          data-floor="sixth">
+
+          <div class="map-label">
+            SIXTH FLOOR
+          </div>
+
+
+          <div
+            class="room"
+            style="left:120px;top:160px"
+            onclick="roomInfo('Potions Study Room','A study space associated with advanced potion preparation.')">
+            Potions Study
+            <small>Study</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:500px;top:280px"
+            onclick="roomInfo('Astronomy Passage','A high castle passage leading toward the upper towers.')">
+            Astronomy Passage
+            <small>Tower Route</small>
+          </div>
+
+        </div>
+
+
+        <!-- SEVENTH -->
+
+        <div
+          class="map-floor hidden"
+          data-floor="seventh">
+
+          <div class="map-label">
+            SEVENTH FLOOR
+          </div>
+
+
+          <div
+            class="room"
+            style="left:170px;top:150px"
+            onclick="roomInfo('Room of Requirement','A mysterious magical room that changes according to the needs of its user.')">
+            Room of Requirement
+            <small>Secret</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:610px;top:260px"
+            onclick="roomInfo('Upper Corridor','A high corridor close to the castle towers.')">
+            Upper Corridor
+            <small>Corridor</small>
+          </div>
+
+        </div>
+
+
+        <!-- DUNGEONS -->
+
+        <div
+          class="map-floor hidden"
+          data-floor="dungeons">
+
+          <div class="map-label">
+            DUNGEONS
+          </div>
+
+
+          <div
+            class="room"
+            style="left:100px;top:170px"
+            onclick="roomInfo('Potions Classroom','A dungeon classroom used for brewing and studying potions.')">
+            Potions
+            <small>Dungeon</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:470px;top:120px"
+            onclick="roomInfo('Slytherin Common Room','A dark green common-room environment located in the dungeons.')">
+            Slytherin
+            <small>Common Room</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:750px;top:300px"
+            onclick="roomInfo('Dungeon Corridor','Cold stone corridors beneath the castle.')">
+            Dungeon Corridor
+            <small>Corridor</small>
+          </div>
+
+        </div>
+
+
+        <!-- TOWERS -->
+
+        <div
+          class="map-floor hidden"
+          data-floor="towers">
+
+          <div class="map-label">
+            TOWERS
+          </div>
+
+
+          <div
+            class="room"
+            style="left:100px;top:180px"
+            onclick="roomInfo('Gryffindor Tower','A high tower associated with Gryffindor house.')">
+            Gryffindor Tower
+            <small>House Tower</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:450px;top:110px"
+            onclick="roomInfo('Ravenclaw Tower','A high tower associated with Ravenclaw house.')">
+            Ravenclaw Tower
+            <small>House Tower</small>
+          </div>
+
+
+          <div
+            class="room"
+            style="left:760px;top:260px"
+            onclick="roomInfo('Astronomy Tower','A high tower used for astronomy lessons and observation.')">
+            Astronomy Tower
+            <small>Observatory</small>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="map-toolbar" style="margin-top:15px">
+
+      <button
+        class="map-control"
+        onclick="zoomMap(0.1)">
+        Zoom +
+      </button>
+
+      <button
+        class="map-control"
+        onclick="zoomMap(-0.1)">
+        Zoom −
+      </button>
+
+      <button
+        class="map-control"
+        onclick="resetMap()">
+        Reset View
+      </button>
+
+    </div>
+
+
+    <div
+      class="map-popup"
+      id="mapPopup">
+
+      <h3>Welcome to Hogwarts</h3>
+
+      <p>
+        Choose a floor above, then click rooms, doors,
+        portraits or staircases to explore.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CHARACTERS -->
+
+<section class="section" id="characters">
+
+  <div class="section-heading">
+
+    <span class="eyebrow">THE WIZARDING WORLD</span>
+
+    <h2>Characters</h2>
+
+    <p>
+      A fan-made directory of major and recurring characters.
+    </p>
+
+  </div>
+
+
+  <input
+    id="characterSearch"
+    class="search-box"
+    placeholder="Search characters..."
+    oninput="filterCards('characterSearch','characterGrid')">
+
+
+  <div class="grid" id="characterGrid">
+
+    <article class="card person-card">
+      <h3>Harry Potter</h3>
+      <span class="role">Gryffindor • Student</span>
+      <p>The central student hero whose years at Hogwarts are shaped by friendship, courage and a growing conflict with Voldemort.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Hermione Granger</h3>
+      <span class="role">Gryffindor • Student</span>
+      <p>A highly prepared and curious witch who combines academic knowledge with loyalty and determination.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Ron Weasley</h3>
+      <span class="role">Gryffindor • Student</span>
+      <p>Harry's loyal friend, known for humour, bravery and his close connection to his family.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Draco Malfoy</h3>
+      <span class="role">Slytherin • Student</span>
+      <p>A Slytherin student from a prominent wizarding family whose story becomes increasingly complicated.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Luna Lovegood</h3>
+      <span class="role">Ravenclaw • Student</span>
+      <p>An imaginative Ravenclaw who approaches unusual ideas with confidence and individuality.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Neville Longbottom</h3>
+      <span class="role">Gryffindor • Student</span>
+      <p>A student whose confidence grows dramatically throughout his Hogwarts years.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Ginny Weasley</h3>
+      <span class="role">Gryffindor • Student</span>
+      <p>A talented witch who becomes a confident and accomplished Hogwarts student.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Fred Weasley</h3>
+      <span class="role">Gryffindor • Student</span>
+      <p>One of the inventive Weasley twins, famous for jokes, creativity and magical products.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>George Weasley</h3>
+      <span class="role">Gryffindor • Student</span>
+      <p>Fred's twin and business partner, sharing his humour, creativity and love of magical mischief.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Cedric Diggory</h3>
+      <span class="role">Hufflepuff • Student</span>
+      <p>A respected Hufflepuff student who becomes Hogwarts' champion in the Triwizard Tournament.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Cho Chang</h3>
+      <span class="role">Ravenclaw • Student</span>
+      <p>A Ravenclaw student and talented Quidditch player.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Seamus Finnigan</h3>
+      <span class="role">Gryffindor • Student</span>
+      <p>A Gryffindor student and member of Harry's wider circle of friends.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Dean Thomas</h3>
+      <span class="role">Gryffindor • Student</span>
+      <p>A Gryffindor student who becomes involved in the wider conflict surrounding Hogwarts.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Parvati Patil</h3>
+      <span class="role">Gryffindor • Student</span>
+      <p>A Gryffindor student and classmate of Harry.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Padma Patil</h3>
+      <span class="role">Ravenclaw • Student</span>
+      <p>A Ravenclaw student and twin sister of Parvati.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Severus Snape</h3>
+      <span class="role">Professor • Slytherin</span>
+      <p>A complex Hogwarts professor whose history connects deeply to Harry's parents and Voldemort.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Rubeus Hagrid</h3>
+      <span class="role">Keeper of Keys • Professor</span>
+      <p>A giant-hearted Hogwarts staff member with a deep love of magical creatures.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Sirius Black</h3>
+      <span class="role">Gryffindor • Marauder</span>
+      <p>Harry's godfather and a former Hogwarts student with a complicated connection to Harry's parents.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Remus Lupin</h3>
+      <span class="role">Professor • Gryffindor</span>
+      <p>A thoughtful Defence Against the Dark Arts teacher and former Marauder.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>James Potter</h3>
+      <span class="role">Gryffindor • Marauder</span>
+      <p>Harry's father and a former Hogwarts student.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Lily Potter</h3>
+      <span class="role">Witch • Gryffindor</span>
+      <p>Harry's mother whose choices have a lasting impact on Harry's story.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Albus Dumbledore</h3>
+      <span class="role">Headmaster</span>
+      <p>The long-serving Hogwarts headmaster and one of the most influential figures in Harry's education.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Lord Voldemort</h3>
+      <span class="role">Dark Wizard</span>
+      <p>The primary antagonist of the series and a former Hogwarts student known originally as Tom Riddle.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Peter Pettigrew</h3>
+      <span class="role">Former Gryffindor</span>
+      <p>A former Marauder whose decisions play an important role in the events surrounding Harry's family.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Nymphadora Tonks</h3>
+      <span class="role">Auror • Hufflepuff</span>
+      <p>An energetic witch and member of the Order of the Phoenix.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Newt Scamander</h3>
+      <span class="role">Magizoologist • Hufflepuff</span>
+      <p>A celebrated magizoologist known for his extraordinary knowledge of magical creatures.</p>
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- TEACHERS -->
+
+<section class="section" id="teachers">
+
+  <div class="section-heading">
+
+    <span class="eyebrow">THE FACULTY</span>
+
+    <h2>Teachers & Staff</h2>
+
+    <p>
+      Hogwarts has many professors and staff members, each
+      responsible for a different part of castle life.
+    </p>
+
+  </div>
+
+
+  <input
+    id="teacherSearch"
+    class="search-box"
+    placeholder="Search teachers..."
+    oninput="filterCards('teacherSearch','teacherGrid')">
+
+
+  <div class="grid" id="teacherGrid">
+
+    <article class="card person-card">
+      <h3>Albus Dumbledore</h3>
+      <span class="role">Headmaster</span>
+      <p>Headmaster of Hogwarts during much of Harry's education.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Minerva McGonagall</h3>
+      <span class="role">Transfiguration</span>
+      <p>A strict but supportive professor and senior member of Hogwarts staff.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Severus Snape</h3>
+      <span class="role">Potions / Defence</span>
+      <p>A long-serving professor associated with Potions and later Defence Against the Dark Arts.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Filius Flitwick</h3>
+      <span class="role">Charms</span>
+      <p>The Charms professor and head of Ravenclaw house.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Pomona Sprout</h3>
+      <span class="role">Herbology</span>
+      <p>Hufflepuff head and Herbology professor.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Rubeus Hagrid</h3>
+      <span class="role">Care of Magical Creatures</span>
+      <p>Keeper of Keys and Grounds who later teaches Care of Magical Creatures.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Remus Lupin</h3>
+      <span class="role">Defence Against the Dark Arts</span>
+      <p>One of Hogwarts' most well-liked Defence Against the Dark Arts teachers.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Gilderoy Lockhart</h3>
+      <span class="role">Defence Against the Dark Arts</span>
+      <p>A celebrity wizard who teaches Defence Against the Dark Arts for one school year.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Quirinus Quirrell</h3>
+      <span class="role">Defence Against the Dark Arts</span>
+      <p>A Defence Against the Dark Arts professor during Harry's first year.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Sybill Trelawney</h3>
+      <span class="role">Divination</span>
+      <p>The Divination professor known for her dramatic predictions.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Horace Slughorn</h3>
+      <span class="role">Potions</span>
+      <p>A former and later returning Potions professor who collects talented students around him.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Rolanda Hooch</h3>
+      <span class="role">Flying Instructor</span>
+      <p>Hogwarts' flying instructor and Quidditch referee.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Madam Pomfrey</h3>
+      <span class="role">Hospital Wing</span>
+      <p>The Hogwarts matron responsible for magical medical care.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Argus Filch</h3>
+      <span class="role">Caretaker</span>
+      <p>The castle caretaker who takes great pride in maintaining order.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Aurora Sinistra</h3>
+      <span class="role">Astronomy</span>
+      <p>The Astronomy professor at Hogwarts.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Charity Burbage</h3>
+      <span class="role">Muggle Studies</span>
+      <p>A Hogwarts professor associated with Muggle Studies.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Wilhelmina Grubbly-Plank</h3>
+      <span class="role">Care of Magical Creatures</span>
+      <p>A substitute teacher who teaches Care of Magical Creatures.</p>
+    </article>
+
+    <article class="card person-card">
+      <h3>Dolores Umbridge</h3>
+      <span class="role">Defence / High Inquisitor</span>
+      <p>A Ministry official who gains significant authority at Hogwarts during Harry's fifth year.</p>
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- CHARACTER QUIZ -->
+
+<section class="section" id="character-quiz">
+
+  <div class="section-heading">
+
+    <span class="eyebrow">THE WIZARDING WORLD</span>
+
+    <h2>Which Character Are You?</h2>
+
+    <p>
+      Answer five questions and discover which of five major
+      Hogwarts characters your answers most closely resemble.
+    </p>
+
+  </div>
+
+
+  <div
+    class="quiz-box"
+    id="characterQuizBox">
+
+    <div class="quiz-progress">
+      Question
+      <span id="characterQuestionNumber">1</span>
+      of 5
+    </div>
+
+
+    <div class="quiz-question-area">
+
+      <h3 id="characterQuestion"></h3>
+
+      <div
+        id="characterAnswers"
+        class="quiz-answers">
+      </div>
+
+      <button
+        id="characterNext"
+        class="btn primary quiz-next"
+        onclick="nextCharacterQuestion()"
+        disabled>
+        Next →
+      </button>
+
+    </div>
+
+
+    <div
+      id="characterResult"
+      class="quiz-result"
+      style="display:none">
+
+      <div
+        id="characterResultIcon"
+        class="quiz-result-icon">
+        ⚡
+      </div>
+
+      <h3 id="characterResultTitle"></h3>
+
+      <p id="characterResultText"></p>
+
+      <button
+        class="btn"
+        onclick="restartCharacterQuiz()">
+        Take Again
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+  <p>
+    <strong>⚡ HOGWARTS</strong>
+  </p>
+
+  <p>
+    A fan-made interactive Hogwarts experience.
+  </p>
+
+  <p>
+    Original descriptions and interface design.
+    No book or film text is reproduced.
+  </p>
+
+</footer>
+
+
+<!-- DAY / NIGHT -->
+
+<button
+  class="daynight"
+  onclick="toggleNight()"
+  title="Toggle day/night mode">
+  ☾
+</button>
+
+
+<script>
+
+/* =========================================================
+   HOUSE DETAILS
+========================================================= */
+
+const houseData = {
+
+  gryffindor:{
+    title:"Gryffindor",
+    text:
+      "Founded by Godric Gryffindor, this house is associated with courage, bravery, nerve and chivalry.",
+    list:[
+      "Symbol: Lion",
+      "Colours: Scarlet and gold",
+      "Element: Fire",
+      "House ghost: Nearly Headless Nick",
+      "Common-room area: Gryffindor Tower",
+      "Notable students include Harry Potter, Hermione Granger and Ron Weasley."
+    ]
+  },
+
+  slytherin:{
+    title:"Slytherin",
+    text:
+      "Founded by Salazar Slytherin, the house is associated with ambition, resourcefulness, determination and strategic thinking.",
+    list:[
+      "Symbol: Serpent",
+      "Colours: Green and silver",
+      "Element: Water",
+      "House ghost: The Bloody Baron",
+      "Common-room area: Dungeons",
+      "Notable students include Draco Malfoy and Tom Riddle."
+    ]
+  },
+
+  ravenclaw:{
+    title:"Ravenclaw",
+    text:
+      "Founded by Rowena Ravenclaw, this house values intelligence, curiosity, creativity and wisdom.",
+    list:[
+      "Symbol: Eagle",
+      "Colours: Blue and bronze in the books",
+      "Element: Air",
+      "House ghost: The Grey Lady",
+      "Common-room area: Ravenclaw Tower",
+      "Notable students include Luna Lovegood and Cho Chang."
+    ]
+  },
+
+  hufflepuff:{
+    title:"Hufflepuff",
+    text:
+      "Founded by Helga Hufflepuff, this house is associated with loyalty, patience, fairness and hard work.",
+    list:[
+      "Symbol: Badger",
+      "Colours: Yellow and black",
+      "Element: Earth",
+      "House ghost: The Fat Friar",
+      "Common-room area: Near the kitchens",
+      "Notable students include Cedric Diggory and Nymphadora Tonks."
+    ]
+  }
+
+};
+
+
+function showHouse(house){
+
+  const data = houseData[house];
+
+  document.getElementById(
+    "houseDetailTitle"
+  ).textContent =
+    data.title;
+
+  document.getElementById(
+    "houseDetailText"
+  ).textContent =
+    data.text;
+
+  const list =
+    document.getElementById(
+      "houseDetailList"
+    );
+
+  list.innerHTML = "";
+
+  data.list.forEach(item => {
+
+    const li =
+      document.createElement("li");
+
+    li.textContent = item;
+
+    list.appendChild(li);
+
+  });
+
+  document.getElementById(
+    "houseDetails"
+  ).classList.add("active");
+
+  document.getElementById(
+    "houseDetails"
+  ).scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
+
+}
+
+
+/* =========================================================
+   HOUSE QUIZ
+========================================================= */
+
+const houseQuestions = [
+
+  {
+    question:"You discover a mysterious door inside Hogwarts. What do you do?",
+    answers:[
+      ["Open it immediately. I want to know what's inside.","Gryffindor"],
+      ["Study the door and figure out how it works.","Ravenclaw"],
+      ["Make sure opening it won't cause trouble first.","Slytherin"],
+      ["Find a friend and investigate it together.","Hufflepuff"]
+    ]
+  },
+
+  {
+    question:"A friend is being treated unfairly. What do you do?",
+    answers:[
+      ["Stand up for them immediately.","Gryffindor"],
+      ["Think carefully about the best argument.","Ravenclaw"],
+      ["Find the smartest way to change the situation.","Slytherin"],
+      ["Stay beside them and make sure they aren't alone.","Hufflepuff"]
+    ]
+  },
+
+  {
+    question:"Which Hogwarts activity sounds most interesting?",
+    answers:[
+      ["Flying and Quidditch.","Gryffindor"],
+      ["Exploring the library.","Ravenclaw"],
+      ["Learning advanced magical strategy.","Slytherin"],
+      ["Herbology and magical creatures.","Hufflepuff"]
+    ]
+  },
+
+  {
+    question:"What motivates you most?",
+    answers:[
+      ["Doing something brave and meaningful.","Gryffindor"],
+      ["Understanding something nobody else understands.","Ravenclaw"],
+      ["Achieving something difficult.","Slytherin"],
+      ["Working hard and doing my best.","Hufflepuff"]
+    ]
+  },
+
+  {
+    question:"Which quality would you most want people to associate with you?",
+    answers:[
+      ["Courage.","Gryffindor"],
+      ["Wisdom.","Ravenclaw"],
+      ["Ambition.","Slytherin"],
+      ["Loyalty.","Hufflepuff"]
+    ]
+  },
+
+  {
+    question:"You find a difficult magical puzzle. What do you do?",
+    answers:[
+      ["Try things until something works.","Gryffindor"],
+      ["Analyze every clue.","Ravenclaw"],
+      ["Look for a clever shortcut.","Slytherin"],
+      ["Work through it patiently.","Hufflepuff"]
+    ]
+  },
+
+  {
+    question:"Which common-room atmosphere sounds best?",
+    answers:[
+      ["A lively room full of adventure.","Gryffindor"],
+      ["A quiet tower full of books.","Ravenclaw"],
+      ["A mysterious underground room.","Slytherin"],
+      ["A warm room where everyone feels welcome.","Hufflepuff"]
+    ]
+  }
+
+];
+
+let houseQuestionIndex=0;
+
+let houseScores={
+  Gryffindor:0,
+  Ravenclaw:0,
+  Hufflepuff:0,
+  Slytherin:0
+};
+
+let selectedHouse=null;
+
+
+function loadHouseQuestion(){
+
+  const q =
+    houseQuestions[houseQuestionIndex];
+
+  document.getElementById(
+    "houseQuestionNumber"
+  ).textContent =
+    houseQuestionIndex+1;
+
+  document.getElementById(
+    "houseQuestion"
+  ).textContent =
+    q.question;
+
+  const area =
+    document.getElementById(
+      "houseAnswers"
+    );
+
+  area.innerHTML="";
+
+  selectedHouse=null;
+
+  document.getElementById(
+    "houseNext"
+  ).disabled=true;
+
+
+  q.answers.forEach(answer => {
+
+    const button =
+      document.createElement("button");
+
+    button.className="quiz-answer";
+
+    button.textContent=answer[0];
+
+    button.onclick=()=>{
+
+      document
+        .querySelectorAll(
+          "#houseAnswers .quiz-answer"
+        )
+        .forEach(
+          b=>b.classList.remove("selected")
+        );
+
+      button.classList.add("selected");
+
+      selectedHouse=answer[1];
+
+      document.getElementById(
+        "houseNext"
+      ).disabled=false;
+
+    };
+
+    area.appendChild(button);
+
+  });
+
+}
+
+
+function nextHouseQuestion(){
+
+  if(!selectedHouse)return;
+
+  houseScores[selectedHouse]++;
+
+  houseQuestionIndex++;
+
+  if(
+    houseQuestionIndex>=
+    houseQuestions.length
+  ){
+
+    finishHouseQuiz();
+
+  }else{
+
+    loadHouseQuestion();
+
+  }
+
+}
+
+
+function finishHouseQuiz(){
+
+  const winningHouse =
+    Object.keys(houseScores).sort(
+      (a,b)=>
+        houseScores[b]-
+        houseScores[a]
+    )[0];
+
+
+  const resultData={
+
+    Gryffindor:[
+      "🦁",
+      "Your House Is Gryffindor!",
+      "Your answers showed courage, initiative and a willingness to stand up for what matters."
+    ],
+
+    Ravenclaw:[
+      "🦅",
+      "Your House Is Ravenclaw!",
+      "Your answers showed curiosity, thoughtful problem-solving and a love of understanding things."
+    ],
+
+    Hufflepuff:[
+      "🦡",
+      "Your House Is Hufflepuff!",
+      "Your answers showed patience, loyalty, fairness and determination."
+    ],
+
+    Slytherin:[
+      "🐍",
+      "Your House Is Slytherin!",
+      "Your answers showed ambition, strategic thinking and determination."
+    ]
+
+  };
+
+  const result =
+    resultData[winningHouse];
+
+
+  document.getElementById(
+    "houseResultIcon"
+  ).textContent=result[0];
+
+  document.getElementById(
+    "houseResultTitle"
+  ).textContent=result[1];
+
+  document.getElementById(
+    "houseResultText"
+  ).textContent=result[2];
+
+  document.getElementById(
+    "houseResult"
+  ).style.display="block";
+
+  document.getElementById(
+    "houseQuizBox"
+  ).classList.add("quiz-finished");
+
+}
+
+
+function restartHouseQuiz(){
+
+  houseQuestionIndex=0;
+
+  houseScores={
+    Gryffindor:0,
+    Ravenclaw:0,
+    Hufflepuff:0,
+    Slytherin:0
+  };
+
+  document.getElementById(
+    "houseQuizBox"
+  ).classList.remove("quiz-finished");
+
+  document.getElementById(
+    "houseResult"
+  ).style.display="none";
+
+  loadHouseQuestion();
+
+}
+
+loadHouseQuestion();
+
+
+/* =========================================================
+   CHARACTER QUIZ
+========================================================= */
+
+const characterQuestions=[
+
+  {
+    question:"What would your friends probably say about you?",
+    answers:[
+      ["Brave and determined",{"Harry":3,"Hermione":1,"Ron":2,"Luna":1,"Draco":1}],
+      ["Smart and prepared",{"Harry":1,"Hermione":3,"Ron":1,"Luna":2,"Draco":1}],
+      ["Funny and loyal",{"Harry":2,"Hermione":1,"Ron":3,"Luna":1,"Draco":1}],
+      ["Unique and imaginative",{"Harry":1,"Hermione":1,"Ron":1,"Luna":3,"Draco":1}],
+      ["Ambitious and confident",{"Harry":1,"Hermione":1,"Ron":1,"Luna":1,"Draco":3}]
+    ]
+  },
+
+  {
+    question:"You have a difficult problem. What's your first instinct?",
+    answers:[
+      ["Face it directly.",{"Harry":3,"Hermione":1,"Ron":2,"Luna":1,"Draco":2}],
+      ["Research until I understand it.",{"Harry":1,"Hermione":3,"Ron":1,"Luna":2,"Draco":1}],
+      ["Ask my friends for help.",{"Harry":2,"Hermione":2,"Ron":3,"Luna":1,"Draco":1}],
+      ["Look at it from a completely different angle.",{"Harry":1,"Hermione":2,"Ron":1,"Luna":3,"Draco":1}],
+      ["Find a clever way around it.",{"Harry":1,"Hermione":1,"Ron":1,"Luna":1,"Draco":3}]
+    ]
+  },
+
+  {
+    question:"Which Hogwarts subject sounds most interesting?",
+    answers:[
+      ["Defence Against the Dark Arts",{"Harry":3,"Hermione":1,"Ron":2,"Luna":1,"Draco":2}],
+      ["Ancient Runes",{"Harry":1,"Hermione":3,"Ron":1,"Luna":2,"Draco":1}],
+      ["Care of Magical Creatures",{"Harry":2,"Hermione":1,"Ron":3,"Luna":2,"Draco":1}],
+      ["Divination",{"Harry":1,"Hermione":1,"Ron":1,"Luna":3,"Draco":1}],
+      ["Potions",{"Harry":2,"Hermione":2,"Ron":1,"Luna":1,"Draco":3}]
+    ]
+  },
+
+  {
+    question:"What would you value most in a friendship?",
+    answers:[
+      ["Someone who will stand beside me.",{"Harry":3,"Hermione":2,"Ron":3,"Luna":1,"Draco":1}],
+      ["Someone I can learn from.",{"Harry":1,"Hermione":3,"Ron":1,"Luna":2,"Draco":1}],
+      ["Someone who makes me laugh.",{"Harry":2,"Hermione":1,"Ron":3,"Luna":2,"Draco":1}],
+      ["Someone who accepts me exactly as I am.",{"Harry":2,"Hermione":1,"Ron":1,"Luna":3,"Draco":1}],
+      ["Someone who understands my goals.",{"Harry":1,"Hermione":2,"Ron":1,"Luna":1,"Draco":3}]
+    ]
+  },
+
+  {
+    question:"You discover a hidden passage. What do you do?",
+    answers:[
+      ["Go inside.",{"Harry":3,"Hermione":1,"Ron":2,"Luna":2,"Draco":1}],
+      ["Figure out where it leads first.",{"Harry":1,"Hermione":3,"Ron":1,"Luna":2,"Draco":2}],
+      ["Bring my friends.",{"Harry":2,"Hermione":2,"Ron":3,"Luna":1,"Draco":1}],
+      ["Wonder why nobody else noticed it.",{"Harry":1,"Hermione":2,"Ron":1,"Luna":3,"Draco":1}],
+      ["Consider whether it could be useful.",{"Harry":1,"Hermione":1,"Ron":1,"Luna":1,"Draco":3}]
+    ]
+  }
+
+];
+
+let characterQuestionIndex=0;
+
+let characterScores={
+  Harry:0,
+  Hermione:0,
+  Ron:0,
+  Luna:0,
+  Draco:0
+};
+
+let selectedCharacter=null;
+
+
+function loadCharacterQuestion(){
+
+  const q=
+    characterQuestions[
+      characterQuestionIndex
+    ];
+
+  document.getElementById(
+    "characterQuestionNumber"
+  ).textContent=
+    characterQuestionIndex+1;
+
+  document.getElementById(
+    "characterQuestion"
+  ).textContent=
+    q.question;
+
+  const area=
+    document.getElementById(
+      "characterAnswers"
+    );
+
+  area.innerHTML="";
+
+  selectedCharacter=null;
+
+  document.getElementById(
+    "characterNext"
+  ).disabled=true;
+
+
+  q.answers.forEach(answer=>{
+
+    const button=
+      document.createElement("button");
+
+    button.className="quiz-answer";
+
+    button.textContent=answer[0];
+
+    button.onclick=()=>{
+
+      document
+        .querySelectorAll(
+          "#characterAnswers .quiz-answer"
+        )
+        .forEach(
+          b=>b.classList.remove("selected")
+        );
+
+      button.classList.add("selected");
+
+      selectedCharacter=answer[1];
+
+      document.getElementById(
+        "characterNext"
+      ).disabled=false;
+
+    };
+
+    area.appendChild(button);
+
+  });
+
+}
+
+
+function nextCharacterQuestion(){
+
+  if(!selectedCharacter)return;
+
+  Object.keys(
+    selectedCharacter
+  ).forEach(character=>{
+    characterScores[character]+=
+      selectedCharacter[character];
+  });
+
+  characterQuestionIndex++;
+
+  if(
+    characterQuestionIndex>=
+    characterQuestions.length
+  ){
+
+    finishCharacterQuiz();
+
+  }else{
+
+    loadCharacterQuestion();
+
+  }
+
+}
+
+
+function finishCharacterQuiz(){
+
+  const winner=
+    Object.keys(characterScores).sort(
+      (a,b)=>
+        characterScores[b]-
+        characterScores[a]
+    )[0];
+
+
+  const results={
+
+    Harry:[
+      "⚡",
+      "You are most like Harry Potter!",
+      "Your answers suggest courage, loyalty and a willingness to face difficult situations."
+    ],
+
+    Hermione:[
+      "📚",
+      "You are most like Hermione Granger!",
+      "Your answers suggest curiosity, preparation, intelligence and determination."
+    ],
+
+    Ron:[
+      "♟",
+      "You are most like Ron Weasley!",
+      "Your answers suggest humour, loyalty, friendship and courage."
+    ],
+
+    Luna:[
+      "🌙",
+      "You are most like Luna Lovegood!",
+      "Your answers suggest imagination, individuality and an unusual way of seeing the world."
+    ],
+
+    Draco:[
+      "🐍",
+      "You are most like Draco Malfoy!",
+      "Your answers suggest ambition, confidence and strategic thinking."
+    ]
+
+  };
+
+
+  const result=results[winner];
+
+  document.getElementById(
+    "characterResultIcon"
+  ).textContent=result[0];
+
+  document.getElementById(
+    "characterResultTitle"
+  ).textContent=result[1];
+
+  document.getElementById(
+    "characterResultText"
+  ).textContent=result[2];
+
+  document.getElementById(
+    "characterResult"
+  ).style.display="block";
+
+  document.getElementById(
+    "characterQuizBox"
+  ).classList.add("quiz-finished");
+
+}
+
+
+function restartCharacterQuiz(){
+
+  characterQuestionIndex=0;
+
+  characterScores={
+    Harry:0,
+    Hermione:0,
+    Ron:0,
+    Luna:0,
+    Draco:0
+  };
+
+  document.getElementById(
+    "characterQuizBox"
+  ).classList.remove("quiz-finished");
+
+  document.getElementById(
+    "characterResult"
+  ).style.display="none";
+
+  loadCharacterQuestion();
+
+}
+
+loadCharacterQuestion();
+
+
+/* =========================================================
+   TRAILER BUTTONS
+========================================================= */
+
+function openTrailer(search){
+
+  const url=
+    "https://www.youtube.com/results?search_query="+
+    encodeURIComponent(search);
+
+  window.open(url,"_blank");
+
+}
+
+
+/* =========================================================
+   MAP
+========================================================= */
+
+let currentFloor="ground";
+
+let mapScale=.82;
+
+
+function selectFloor(floor,button){
+
+  currentFloor=floor;
+
+  document
+    .querySelectorAll(".map-floor")
+    .forEach(
+      el=>el.classList.add("hidden")
+    );
+
+  const selected=
+    document.querySelector(
+      '.map-floor[data-floor="'+floor+'"]'
+    );
+
+  if(selected){
+    selected.classList.remove("hidden");
+  }
+
+  document
+    .querySelectorAll(".floor-btn")
+    .forEach(
+      btn=>btn.classList.remove("active")
+    );
+
+  if(button){
+    button.classList.add("active");
+  }
+
+  const names={
+    ground:"Ground Floor",
+    first:"First Floor",
+    second:"Second Floor",
+    third:"Third Floor",
+    fourth:"Fourth Floor",
+    fifth:"Fifth Floor",
+    sixth:"Sixth Floor",
+    seventh:"Seventh Floor",
+    dungeons:"Dungeons",
+    towers:"Towers"
+  };
+
+  document.getElementById(
+    "mapFloorText"
+  ).textContent=
+    names[floor] || floor;
+
+  document.getElementById(
+    "mapPopup"
+  ).innerHTML=
+    "<h3>"+names[floor]+"</h3>"+
+    "<p>Explore this level by clicking rooms, doors, portraits and staircases.</p>";
+
+}
+
+
+function useStaircase(floor){
+
+  const button=
+    [...document.querySelectorAll(".floor-btn")]
+    .find(
+      btn =>
+        btn.textContent
+          .trim()
+          .toLowerCase()
+          .startsWith(
+            floor==="first"?"first":
+            floor==="second"?"second":
+            floor
+          )
+    );
+
+  selectFloor(floor,button);
+
+}
+
+
+function roomInfo(title,description){
+
+  document.getElementById(
+    "mapPopup"
+  ).innerHTML=
+    "<h3>"+title+"</h3>"+
+    "<p>"+description+"</p>"+
+    "<p><strong>Location:</strong> "+currentFloor+" level</p>";
+
+}
+
+
+function toggleDoor(door){
+
+  door.classList.toggle("open");
+
+  const isOpen=
+    door.classList.contains("open");
+
+  document.getElementById(
+    "mapPopup"
+  ).innerHTML=
+    "<h3>Castle Door</h3>"+
+    "<p>The magical door is now "+
+    (isOpen?"open":"closed")+
+    ".</p>";
+
+}
+
+
+const portraitMessages=[
+  "The portrait watches you carefully.",
+  "The portrait whispers about a staircase nearby.",
+  "The portrait seems to recognize you.",
+  "The portrait suddenly looks toward the ceiling.",
+  "The portrait politely tells you to keep exploring."
+];
+
+let portraitIndex=0;
+
+
+function portraitTalk(){
+
+  const message=
+    portraitMessages[
+      portraitIndex %
+      portraitMessages.length
+    ];
+
+  portraitIndex++;
+
+  document.getElementById(
+    "mapPopup"
+  ).innerHTML=
+    "<h3>Moving Portrait</h3>"+
+    "<p>“"+message+"”</p>";
+
+}
+
+
+function zoomMap(amount){
+
+  mapScale+=amount;
+
+  mapScale=
+    Math.max(.45,Math.min(1.25,mapScale));
+
+  updateMapTransform();
+
+}
+
+
+function resetMap(){
+
+  mapScale=.82;
+
+  updateMapTransform();
+
+}
+
+
+function updateMapTransform(){
+
+  document.getElementById(
+    "mapScene"
+  ).style.transform=
+    "translate(-50%,-50%) "+
+    "rotateX(54deg) "+
+    "rotateZ(-2deg) "+
+    "scale("+mapScale+")";
+
+}
+
+
+/* =========================================================
+   DAY / NIGHT
+========================================================= */
+
+function toggleNight(){
+
+  document.body.classList.toggle("night");
+
+  const button=
+    document.querySelector(".daynight");
+
+  button.textContent=
+    document.body.classList.contains("night")
+      ? "☀"
+      : "☾";
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+function filterCards(inputId,gridId){
+
+  const input=
+    document.getElementById(inputId);
+
+  const query=
+    input.value.toLowerCase();
+
+  const cards=
+    document
+      .getElementById(gridId)
+      .querySelectorAll(".person-card");
+
+  cards.forEach(card=>{
+
+    const text=
+      card.textContent.toLowerCase();
+
+    card.style.display=
+      text.includes(query)
+        ? ""
+        : "none";
+
+  });
+
+}
+
+
+/* =========================================================
+   MAP DRAG / PAN
+========================================================= */
+
+const viewport=
+  document.getElementById("mapViewport");
+
+const scene=
+  document.getElementById("mapScene");
+
+let dragging=false;
+let startX=0;
+let startY=0;
+let offsetX=0;
+let offsetY=0;
+
+viewport.addEventListener(
+  "pointerdown",
+  e=>{
+
+    dragging=true;
+
+    startX=e.clientX-offsetX;
+    startY=e.clientY-offsetY;
+
+    viewport.setPointerCapture(e.pointerId);
+
+  }
+);
+
+
+viewport.addEventListener(
+  "pointermove",
+  e=>{
+
+    if(!dragging)return;
+
+    offsetX=e.clientX-startX;
+    offsetY=e.clientY-startY;
+
+    scene.style.marginLeft=
+      offsetX+"px";
+
+    scene.style.marginTop=
+      offsetY+"px";
+
+  }
+);
+
+
+viewport.addEventListener(
+  "pointerup",
+  ()=>{
+    dragging=false;
+  }
+);
+
+
+viewport.addEventListener(
+  "pointerleave",
+  ()=>{
+    dragging=false;
+  }
+);
+
+
+/* MOUSE WHEEL ZOOM */
+
+viewport.addEventListener(
+  "wheel",
+  e=>{
+
+    e.preventDefault();
+
+    zoomMap(
+      e.deltaY<0 ? .05 : -.05
+    );
+
+  },
+  {passive:false}
+);
+
+</script>
+
+</body>
+</html>
